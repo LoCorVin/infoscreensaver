@@ -1,0 +1,64 @@
+<InfoScreenLayout@BoxLayout>:
+    id: info_screen
+    orientation: 'vertical'
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'wallpapers/eiffel-towe.jpg'
+    BoxLayout:
+        size_hint: (1, .15)
+        id: 'top_bar'
+        Label:
+            text: 'Home 17'
+        Label:
+        Label:
+            text: '14:32'
+    ScrollView:
+    	id: scroll
+        size_hint: (1, .85)
+	    BoxLayout:
+	        id: travel_info
+	        spacing: 10
+	        padding: 10
+	        orientation: 'vertical'
+
+
+<TravelWidget@BoxLayout>:
+	id: travel_item
+	valign: 'middle'
+    canvas:
+        Color:
+            rgba: 0, 0, 0, .5
+        Rectangle:
+            pos: self.pos
+            size: self.size
+	Label:
+		size_hint: (.1, 1)
+		text: '2 Min'
+	Label:
+		size_hint: (.3, 1)
+		align: 'center'
+		text: 'Garching_Forschungszentrum'
+	BoxLayout:
+		size_hint: (.3, 1)
+		id: travel_images
+		padding: 20
+		spacing: 5
+		Image:
+		    width: 10
+		    source: 'ubahn.svg'
+		Image:
+		    source: 'wallpapers/eiffel-towe.jpg'
+	Label:
+		size_hint: (.1, 1)
+		text: '00:43'
+	BoxLayout:
+		size_hint: (.2, 1)
+		orientation: 'vertical'
+		Label:
+			size_hint: (1, .4)
+			text: 'Abfahrt'
+		Label:
+			size_hint: (1, .6)
+			text: 'Ankunft'
