@@ -10,10 +10,16 @@
         size_hint: (1, .15)
         id: 'top_bar'
         Label:
-            text: 'Home 17'
+        	id: here
+            text: 'Home'
+            font_size: '30sp'
+            bold: True
         Label:
         Label:
+        	id: clock
             text: '14:32'
+            font_size: '52sp'
+            bold: True
     ScrollView:
     	id: scroll
         size_hint: (1, .85)
@@ -34,31 +40,37 @@
             pos: self.pos
             size: self.size
 	Label:
+		id: in_time
 		size_hint: (.1, 1)
 		text: '2 Min'
 	Label:
+		id: destination
 		size_hint: (.3, 1)
 		align: 'center'
 		text: 'Garching_Forschungszentrum'
 	BoxLayout:
-		size_hint: (.3, 1)
+		size_hint: (.4, 1)
 		id: travel_images
-		padding: 20
+	    canvas:
+	        Color:
+	            rgba: 0, 0, 0, .5
+	        Rectangle:
+	            pos: self.pos
+	            size: self.size
+		padding: 7
 		spacing: 5
-		Image:
-		    width: 10
-		    source: 'ubahn.svg'
-		Image:
-		    source: 'wallpapers/eiffel-towe.jpg'
 	Label:
+		id: duration
 		size_hint: (.1, 1)
 		text: '00:43'
 	BoxLayout:
-		size_hint: (.2, 1)
+		size_hint: (.1, 1)
 		orientation: 'vertical'
 		Label:
+			id: departure
 			size_hint: (1, .4)
 			text: 'Abfahrt'
 		Label:
+			id: arrival
 			size_hint: (1, .6)
 			text: 'Ankunft'
