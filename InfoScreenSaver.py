@@ -12,35 +12,38 @@ from kivy.uix.button import Button
 from kivy.graphics.svg import Svg
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.scatter import Scatter
+from colour import Color
 from kivy.clock import Clock
 from kivy.config import Config
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 from kivy.graphics import Rectangle
-from kivy.properties import StringProperty
+from kivy.properties import StringProperty, ListProperty
+from pprint import pprint
 
+class Separator(Label):
+    pass
 
 class InfoScreenLayout(BoxLayout):
     pass
 
-class SvgWidget(Scatter):
-
-    def __init__(self, filename, **kwargs):
-        super(SvgWidget, self).__init__(**kwargs)
-        with self.canvas:
-            svg = Svg(filename)
-        self.size = svg.width, svg.height
-
 class TravelWidget(BoxLayout):
     pass
 
-#class SvgImage(Scatter):
-#
-#    def __init__(self, filename, **kwargs):
-#        super(SvgWidget, self).__init__(**kwargs)
-#        with self.canvas:
-#            svg = Svg(filename)
-#        self.size = svg.width, svg.height
+class LineLabel(Label):
+    pass
+
+class TransImage(Image):
+    pass
+
+
+class TransportMean(BoxLayout):
+    colour_property = ListProperty([0, 1, 0, 1])
+    def __init__(self, **kwargs):
+        self.colour_property = [0, 1, 0, 1]
+        super(TransportMean, self).__init__(**kwargs)
+
+
 
 class InfoScreenSaver(App):
 
@@ -48,10 +51,12 @@ class InfoScreenSaver(App):
 
     __travel_w_count = 8
 
-    __destinations = []
+    __destinations = ["", ""]
 
     __infoScreenLayout = None
     __triparray = []
+    __colorarray = []
+    __colored_index = 0
 
     def __init__(self):
         App.__init__(self)
@@ -81,8 +86,12 @@ class InfoScreenSaver(App):
             time_enhanced_tf = enhance_times(style_ext_trips)
             unsorted_trips += time_enhanced_tf
         self.__triparray = sorted(unsorted_trips, key=lambda trip: trip['predictedDeparture'] if 'predictedDeparture' in trip else trip['departure'])[:self.__travel_w_count]
+        self.update_infos()
 
     def update_infos(self, whatever = None):
+        self.__colorarray = []
+        self.__colored_index = 0
+        self.load_colors(self.__triparray)
         now = now_ms()
         self.__infoScreenLayout.ids.clock.text = get_dt(now_ms())['time']
         self.__infoScreenLayout.ids.here.text = self.__here
@@ -95,11 +104,23 @@ class InfoScreenSaver(App):
             travel_widget.ids.duration.text = short_distance(trip['duration'])
             travel_widget.ids.departure.text = get_dt(trip['departure'])['time']
             travel_widget.ids.arrival.text = get_dt(trip['arrival'])['time']
-            for part in get_short_transport(trip):
+            parts = get_short_transport(trip)
+            for part in parts:
                 travel_widget.ids.travel_images.add_widget(part)
             self.__infoScreenLayout.ids.travel_info.add_widget(travel_widget)
 
 
+    def get_label_color(self, label):
+        self.__colored_index = self.__colored_index +1
+        return self.__colorarray[self.__colored_index -1]
+
+
+    def load_colors(self, trips):
+        for trip in trips:
+            for parts in trip['trip_parts']:
+                if 'background' in parts['style']:
+                    c = Color(parts['style']['background'])
+                    self.__colorarray.append([c.red, c.green, c.blue, 0.75])
 
 
 
@@ -113,19 +134,25 @@ def scale_f_height(max_height, height):
 def get_short_transport(trip):
     widgets = []
     for trip_part in trip['trip_parts']:
-        svg = SvgWidget("transportMucAPI/" + trip_part['style']['icon'])
-        gl = GridLayout(cols=2)
-        gl.add_widget(svg)
+        #transport = TransportMean()
+        trans_image = TransImage()
+        trans_image.source = "transportMucAPI/" + trip_part['style']['icon']
+        # transport.ids.transport_icon.source = "transportMucAPI/" + trip_part['style']['icon']
+        widgets.append(trans_image)
         if 'line' in trip_part and len(trip_part['line']) > 0:
-            l = Label(text=trip_part['line'])
-            l.color= 1,0,1,1
-            gl.add_widget(l)
-        widgets.append(gl)
-        svg.scale = scale_f_height(40, svg.height)
-        svg.center = Window.center
+            ll = LineLabel()
+            #transport.add_widget(ll)
+            if "transportation" in trip_part and 'BOB' in trip_part['transportation']:
+                ll.text = 'BOB'
+            else:
+                ll.text = trip_part['line']
+            widgets.append(ll)
+        #widgets.append(Separator())
+        #widgets.append(transport)
+        #svg.scale = scale_f_height(40, svg.height)
+        #svg.center = Window.center
 
     return widgets
-
 
 def now_ms():
     return int(round(time.time() * 1000))

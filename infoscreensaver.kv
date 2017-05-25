@@ -29,6 +29,39 @@
 	        padding: 10
 	        orientation: 'vertical'
 
+<Separator@Label>
+	size_hint: (.001, 1)
+	canvas:
+		Color:
+			rgba: 1, 0, 0, .25
+		Rectangle:
+            pos: self.pos
+            size: self.size
+
+
+<LineLabel@Label>:
+    bold: True
+    font_size: '30sp'
+    id: transport_line
+    canvas.before:
+    	Color:
+            rgba: app.get_label_color(self)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+<TransportMean@BoxLayout>:
+	Image:
+		id: icon
+	Label:
+		id: label
+	Separator:
+		size_hint: (.1, 1)
+
+
+<TransImage@Image>:
+
+
 
 <TravelWidget@BoxLayout>:
 	id: travel_item
@@ -40,6 +73,7 @@
             pos: self.pos
             size: self.size
 	Label:
+		bold: True
 		id: in_time
 		size_hint: (.1, 1)
 		text: '2 Min'
@@ -49,22 +83,15 @@
 		align: 'center'
 		text: 'Garching_Forschungszentrum'
 	BoxLayout:
-		size_hint: (.4, 1)
+		size_hint: (.5, 1)
 		id: travel_images
-	    canvas:
-	        Color:
-	            rgba: 0, 0, 0, .5
-	        Rectangle:
-	            pos: self.pos
-	            size: self.size
-		padding: 7
-		spacing: 5
+		padding: 0, 5
 	Label:
 		id: duration
-		size_hint: (.1, 1)
+		size_hint: (.05, 1)
 		text: '00:43'
 	BoxLayout:
-		size_hint: (.1, 1)
+		size_hint: (.05, 1)
 		orientation: 'vertical'
 		Label:
 			id: departure
