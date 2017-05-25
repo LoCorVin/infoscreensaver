@@ -41,7 +41,7 @@
 
 <LineLabel@Label>:
     bold: True
-    font_size: '30sp'
+    font_size: '25sp'
     id: transport_line
     canvas.before:
     	Color:
@@ -51,12 +51,6 @@
             size: self.size
 
 <TransportMean@BoxLayout>:
-	Image:
-		id: icon
-	Label:
-		id: label
-	Separator:
-		size_hint: (.1, 1)
 
 
 <TransImage@Image>:
@@ -68,7 +62,7 @@
 	valign: 'middle'
     canvas:
         Color:
-            rgba: 0, 0, 0, .5
+            rgba: 0, 0, 0, .75
         Rectangle:
             pos: self.pos
             size: self.size
@@ -76,22 +70,26 @@
 		bold: True
 		id: in_time
 		size_hint: (.1, 1)
+    	font_size: '20sp'
 		text: '2 Min'
 	Label:
 		id: destination
-		size_hint: (.3, 1)
+		size_hint: (.2, 1)
+    	font_size: '20sp'
+		bold: True
 		align: 'center'
 		text: 'Garching_Forschungszentrum'
 	BoxLayout:
 		size_hint: (.5, 1)
 		id: travel_images
 		padding: 0, 5
+		spacing: 8
 	Label:
 		id: duration
-		size_hint: (.05, 1)
+		size_hint: (.1, 1)
 		text: '00:43'
 	BoxLayout:
-		size_hint: (.05, 1)
+		size_hint: (.1, 1)
 		orientation: 'vertical'
 		Label:
 			id: departure

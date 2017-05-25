@@ -24,6 +24,9 @@ from pprint import pprint
 class Separator(Label):
     pass
 
+class TransportMean(BoxLayout):
+    pass
+
 class InfoScreenLayout(BoxLayout):
     pass
 
@@ -47,11 +50,11 @@ class TransportMean(BoxLayout):
 
 class InfoScreenSaver(App):
 
-    __here = ""
+    __here = "Belgradstraße 36"
 
     __travel_w_count = 8
 
-    __destinations = ["", ""]
+    __destinations = ["Holzkirchen", "Garching-Forschun", "Arcisstraße 21"]
 
     __infoScreenLayout = None
     __triparray = []
@@ -98,7 +101,10 @@ class InfoScreenSaver(App):
         self.__infoScreenLayout.ids.travel_info.clear_widgets()
         for trip in self.__triparray:
             travel_widget = TravelWidget()
-            travel_widget.ids.destination.text = trip['trip_parts'][-1]['to']
+            dest = trip['trip_parts'][-1]['to']
+            if len(dest) > 14:
+                dest = dest[:15] + "."
+            travel_widget.ids.destination.text = dest
             in_string = distance(trip['departure'] - now)
             travel_widget.ids.in_time.text = in_string
             travel_widget.ids.duration.text = short_distance(trip['duration'])
@@ -134,11 +140,11 @@ def scale_f_height(max_height, height):
 def get_short_transport(trip):
     widgets = []
     for trip_part in trip['trip_parts']:
-        #transport = TransportMean()
+        transport = TransportMean()
         trans_image = TransImage()
         trans_image.source = "transportMucAPI/" + trip_part['style']['icon']
         # transport.ids.transport_icon.source = "transportMucAPI/" + trip_part['style']['icon']
-        widgets.append(trans_image)
+        transport.add_widget(trans_image)
         if 'line' in trip_part and len(trip_part['line']) > 0:
             ll = LineLabel()
             #transport.add_widget(ll)
@@ -146,9 +152,9 @@ def get_short_transport(trip):
                 ll.text = 'BOB'
             else:
                 ll.text = trip_part['line']
-            widgets.append(ll)
+            transport.add_widget(ll)
         #widgets.append(Separator())
-        #widgets.append(transport)
+        widgets.append(transport)
         #svg.scale = scale_f_height(40, svg.height)
         #svg.center = Window.center
 
