@@ -50,19 +50,22 @@ class TransportMean(BoxLayout):
 
 class InfoScreenSaver(App):
 
-    __here = "Belgradstraße 36"
+    __here = "Münchner Frei"
 
     __travel_w_count = 8
 
-    __destinations = ["Holzkirchen", "Garching-Forschun", "Arcisstraße 21"]
+    __destinations = ["Universität"]
+
+    __timetolerance = 0
 
     __infoScreenLayout = None
-    __triparray = []
-    __colorarray = []
-    __colored_index = 0
+    
 
     def __init__(self):
         App.__init__(self)
+        self.__triparray = []
+        self.__colorarray = []
+        self.__colored_index = 0
         self.photos = []
         find_all_photos(self)
 
@@ -89,6 +92,7 @@ class InfoScreenSaver(App):
             time_enhanced_tf = enhance_times(style_ext_trips)
             unsorted_trips += time_enhanced_tf
         self.__triparray = sorted(unsorted_trips, key=lambda trip: trip['predictedDeparture'] if 'predictedDeparture' in trip else trip['departure'])[:self.__travel_w_count]
+        self.__triparray = list(filter(lambda trip: trip['departure'] - time.time()*1000 > 1000*InfoScreenSaver.__timetolerance, self.__triparray))
         self.update_infos()
 
     def update_infos(self, whatever = None):
