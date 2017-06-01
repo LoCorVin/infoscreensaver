@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import kivy
 import random, os, time
 from kivy.app import App
@@ -50,11 +51,11 @@ class TransportMean(BoxLayout):
 
 class InfoScreenSaver(App):
 
-    __here = "Münchner Frei"
+    __here = ""
 
-    __travel_w_count = 8
+    __travel_w_count = 6
 
-    __destinations = ["Universität"]
+    __destinations = [""]
 
     __timetolerance = 0
 
@@ -86,12 +87,16 @@ class InfoScreenSaver(App):
     def load_trips(self, whatever=None):
         unsorted_trips = []
         for destiantion in self.__destinations:
-            trips = get_trips(self.__here, destiantion)
+            trips = []
+            try:
+                trips = get_trips(self.__here, destiantion)
+            except Exception:
+                return
             selected_trip_info = shorten_trips(trips)
             style_ext_trips = extend_style(selected_trip_info)
             time_enhanced_tf = enhance_times(style_ext_trips)
             unsorted_trips += time_enhanced_tf
-        self.__triparray = sorted(unsorted_trips, key=lambda trip: trip['predictedDeparture'] if 'predictedDeparture' in trip else trip['departure'])[:self.__travel_w_count]
+        self.__triparray = sorted(unsorted_trips, key=lambda trip: trip['predictedDeparture'] if 'predictedDeparture' in trip else trip['departure'])
         self.__triparray = list(filter(lambda trip: trip['departure'] - time.time()*1000 > 1000*InfoScreenSaver.__timetolerance, self.__triparray))
         self.update_infos()
 
@@ -103,7 +108,7 @@ class InfoScreenSaver(App):
         self.__infoScreenLayout.ids.clock.text = get_dt(now_ms())['time']
         self.__infoScreenLayout.ids.here.text = self.__here
         self.__infoScreenLayout.ids.travel_info.clear_widgets()
-        for trip in self.__triparray:
+        for trip in self.__triparray[:self.__travel_w_count]:
             travel_widget = TravelWidget()
             dest = trip['trip_parts'][-1]['to']
             if len(dest) > 14:
