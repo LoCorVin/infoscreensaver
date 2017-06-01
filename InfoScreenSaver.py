@@ -90,6 +90,8 @@ class InfoScreenSaver(App):
             trips = []
             try:
                 trips = get_trips(self.__here, destiantion)
+                if len(trips) > 3:
+                    trips = trips[:3]
             except Exception:
                 return
             selected_trip_info = shorten_trips(trips)
