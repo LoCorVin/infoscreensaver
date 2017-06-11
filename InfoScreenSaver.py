@@ -179,11 +179,13 @@ def now_ms():
     return int(round(time.time() * 1000))
 
 def find_all_photos(app):
-    directory="wallpapers"
+    file_path = os.path.dirname(__file__)
+    dir_name = os.path.join(file_path, 'wallpapers')
+    print(dir_name)
     indirectory = []
-    for filename in os.listdir(directory):
+    for filename in os.listdir(dir_name):
         if filename.endswith(".jpg") or filename.endswith(".JPG"):
-            indirectory.append(directory + "/" + filename)
+            indirectory.append(dir_name + "/" + filename)
     app.add_photos(indirectory)
         
 if __name__ == '__main__':
