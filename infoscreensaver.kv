@@ -10,16 +10,25 @@
         size_hint: (1, .15)
         id: 'top_bar'
         Label:
+        	size_hint: (.6, 1)
         	id: here
             text: 'Home'
             font_size: '30sp'
             bold: True
         Label:
-        Label:
         	id: clock
+        	size_hint: (.3, 1)
             text: '14:32'
             font_size: '52sp'
             bold: True
+        Button:
+        	id: termination_button
+        	size_hint: (.1, 1)
+	        background_color: 0, 0, 0, 0
+            text: 'x'
+            font_size: '70sp'
+            bold: True
+            on_press: app.terminate()
     ScrollView:
     	id: scroll
         size_hint: (1, .85)

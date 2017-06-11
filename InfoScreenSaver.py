@@ -51,11 +51,11 @@ class TransportMean(BoxLayout):
 
 class InfoScreenSaver(App):
 
-    __here = ""
+    __here = "Belgradstraße 36"
 
     __travel_w_count = 6
 
-    __destinations = [""]
+    __destinations = ["Max-Weber-"]
 
     __timetolerance = 0
 
@@ -79,6 +79,10 @@ class InfoScreenSaver(App):
         self.update_infos()
         return self.__infoScreenLayout
 
+
+    def terminate(self):
+        print("Termination")
+        self.stop()
 
     def add_button(self, box_layout):
         print("Add travel widget")
