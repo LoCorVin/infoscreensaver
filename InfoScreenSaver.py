@@ -50,12 +50,11 @@ class TransportMean(BoxLayout):
 
 
 class InfoScreenSaver(App):
-
-    __here = "Belgradstraße 36"
+    __here = "Belgradstra�~_e 36"
 
     __travel_w_count = 6
 
-    __destinations = ["Max-Weber-"]
+    __destinations = ["Arcisstra�~_e 21", "Garching-Forsch", "Holzkirchen"]
 
     __timetolerance = 0
 
